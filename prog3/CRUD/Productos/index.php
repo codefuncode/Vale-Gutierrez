@@ -1,0 +1,61 @@
+<?php
+    include '..\Libs\header.php';
+?>
+<html>
+<head>
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1. shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Productos</title>
+</head>
+<body>
+    <!--BARRA DE NAVEGACION-->
+<header>
+</header>
+    <!--TABLA DE PRODUCTOS-->
+<div class="container-fluid">
+<div class="row">
+    <div><a href="create.php" class="btn btn-success btn-sm mb-2 ml-2"><i class="far fa-file"></i>Agregar</a></div>
+        <?php
+        $sql='Select * from productos '. ($_SESSION["isVale"]);//Cambia la forma//
+        $productos= preparar_select($conexion,$sql);
+        $campos=$productos->fetch_fields();
+        ?>
+        <div class="table-responsive">
+        <table class="table table-striped">
+                <thead>
+                    <?php
+                        foreach($campos as $campo){
+                            echo '<th>' .substr($campo->name,1).'</th>';
+                        }
+                        echo '<th>Acciones</th>';
+                    ?>
+                </thead>
+                <tbody>
+                    <?php 
+                        foreach ($productos as $fila) {
+                            echo '<tr>';
+                            foreach ($campos as $campo){
+                            echo '<td>'.$fila[$campo->name].'</td>';
+                            }
+                        echo'<td><div class="d-flex flex-row">
+                        <div class="p-1"><a href="update.php?iIdProductos='.$fila["iIdProductos"].'" class="btn btn-outline-primary btn-sm"><i class="far fa-edit"></i>Modificar</a></div>';
+                        if ($fila["bEliminado"]==0){ 
+                        echo '<div class="p-1"><a href="delete.php?iIdProductos='.$fila["iIdProductos"].'"class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i>Eliminar</a></div>';
+                        }else {
+                            echo '<div class="p-1"><a href="recuperar.php?iIdProductos='.$fila["iIdProductos"].'"class="btn btn-outline-warning btn-sm"><i class="fas fa-trash-restore-alt"></i>Recuperar</a></div>';
+                        }
+                        echo '<div class="p-1"><a href="imagenes.php?iIdProductos='.$fila["iIdProductos"].'"class="btn btn-outline-secondary btn-sm"><i class="far fa-images"></i>Imagenes</a></div>';
+                        }
+                        '<div class="p-1"><a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-user-secret"></i>Auditoria</a></div></div></td></tr>';
+                    ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- FOOTER -->
+<?php
+    include '..\Libs\footer.php';
+?>
+</body>
+</html>

@@ -12,13 +12,13 @@
         $usuario= $conexion->real_escape_string ($_POST['txtUsuario']);
         $contraseña=$conexion->real_escape_string($_POST['txtContraseña']);
         
-            $sql="SELECT * FROM usuarios where usuario=?";
+            $sql="SELECT * FROM usuarios where sLogin=?";
             $datos=preparar_select($conexion,$sql,[$usuario]);
             if($datos->num_rows>0){
                 $fila = $datos->fetch_assoc();
-                if($contraseña==$fila["clave"]){
+                if($contraseña==$fila["sClave"]){
                     $_SESSION["iIdUsuarios"]=$fila["iIdUsuarios"];
-                    $_SESSION["usuario"]=$fila["usuario"];
+                    $_SESSION["sLogin"]=$fila["sLogin"];
                     $_SESSION["isVale"]=1;
                     $_SESSION["sNombre"]=$fila["sNombre"];
                     $_SESSION["sApellido"]=$fila["sApellido"];
